@@ -101,3 +101,21 @@ hr {
   clear: both;
   display: table;
 }
+table{
+  padding: 10px;
+}
+
+table tr td:nth-of-type(1){
+color:red;
+font-size:1.5em;
+font-weight: 600;
+}
+table tr td:nth-of-type(2) {
+  font-size: 1.2em;
+ color:black;
+ padding:10px
+}
+table tr:last-child td:nth-of-type(2) {
+  line-height: 1.2em;
+  font-size: 1.1em;
+}

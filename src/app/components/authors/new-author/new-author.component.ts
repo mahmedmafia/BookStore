@@ -26,8 +26,8 @@ export class NewAuthorComponent implements OnInit {
     reader.onload = (_event) => {
       this.imgURL = reader.result;
       console.log(this.imgURL);
+    }
   }
-}
   addAuthor(f) {
     const formData = new FormData();
     formData.append('file', this.images);

@@ -31,6 +31,47 @@ export class BookstoreService {
       Image: Image,
     };
   }
+  mapAuthor(doc) {
+    const LocalHostUrl = "http://localhost:3000/";
+    let Image;
+    if (!doc.Image) {
+      Image = null;
+    } else {
+      Image = LocalHostUrl + doc.Image;
+    }
+    return {
+
+      id: doc._id,
+      books: doc.books,
+      first_name: doc.first_name,
+      last_name: doc.last_name,
+      date_of_birth: doc.date_of_birth,
+      date_of_death: doc.date_of_death,
+      Image: Image,
+    };
+  }
+  mapAuthors(docs) {
+    return docs.map(doc => {
+      const LocalHostUrl = "http://localhost:3000/";
+      let Image;
+      if (!doc.Image) {
+        Image = null;
+      } else {
+        Image = LocalHostUrl + doc.Image;
+      }
+      return {
+
+        id: doc._id,
+        books: doc.books,
+        first_name: doc.first_name,
+        last_name: doc.last_name,
+        date_of_birth: doc.date_of_birth,
+        date_of_death: doc.date_of_death,
+        Image: Image,
+      };
+    });
+
+  }
   mapBooks(docs): Book[] {
     return docs.map(doc => {
       const LocalHostUrl = "http://localhost:3000/";
@@ -67,22 +108,24 @@ export class BookstoreService {
   getBook(id) {
     return this.http.get<Book>(this.BooksUrl + '/' + id).pipe(map(doc => doc['doc']), map(this.mapBook));
   }
-  getAuthors() {
-    return this.http.get<Author[]>(this.AuthorsUrl)
-      .pipe(map(docs => docs['docs']), map(docs => {
-        return docs.map(doc => {
-          return {
+  getAuthor(id) {
+    return this.http.get<Author>(this.AuthorsUrl + '/' + id)
+      .pipe(map(docs => docs['docs']), map(doc => {
+        return {
 
-            id: doc._id,
-            books: doc.books,
-            first_name: doc.first_name,
-            last_name: doc.last_name,
-            date_of_birth: doc.isbn,
-            date_of_death: doc.genre,
-          };
-        });
+          id: doc._id,
+          books: doc.books,
+          first_name: doc.first_name,
+          last_name: doc.last_name,
+          date_of_birth: doc.date_of_birth,
+          date_of_death: doc.date_of_death,
+        };
 
       }));
+  }
+  getAuthors() {
+    return this.http.get<Author[]>(this.AuthorsUrl)
+      .pipe(map(docs => docs['docs']), map(this.mapAuthors));
 
   }
   getGenres() {
@@ -108,30 +151,12 @@ export class BookstoreService {
   addAuthor(newAuthor) {
     this.http.post(this.AuthorsUrl, newAuthor).subscribe(res => {
       console.log(res);
-    },(err)=>{
+    }, (err) => {
       console.log(err.error.error.message)
     });
   }
 }
 
-// export class Book {
-//   id: String;
-//    title: String;
-//   author: Author;
-//   summary: String;
-//   isbn: String;
-//   genre?: Genre[];
-//   Image?: String;
-//   constructor(id, title, summary, author, isbn, genre?, Image?) {
-//     this.id = id;
-//     this.title = title;
-//     this.author = author;
-//     this.summary = summary;
-//     this.genre = genre;
-//     this.Image = Image;
-//     this.isbn = isbn;
-//   }
-// }
 export interface Book {
   id: String,
   title: String,
@@ -152,4 +177,5 @@ export interface Author {
   first_name: String,
   last_name: String,
   books: Book[],
+  Image: String,
 }
