@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <h1 class="text-center">Add a New Book</h1>
+    <div class="col-md-12">
+      <div style="width:60%;margin:20px auto">
+        <form [formGroup]="bookForm" (ngSubmit)="AddBook()">
+          <div class="form-group">
+            <label>Author</label>
+            <select class="form-control" formControlName="author">
+              <option *ngFor="let author of authors" [value]="author.id">{{ author.first_name +' ' +author.last_name}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Book Title</label>
+            <input type="text" formControlName="title" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Book Image</label>
+            <input type="file" formControlName="Image" class="form-control" (change)="selectImage($event)">
+          </div>
+          <div class="form-group">
+            <label>Summary</label>
+            <textarea type="text" formControlName="summary" class="form-control"></textarea>
+          </div>
+
+          <!-- <div class="form-group">
+            <label>Genre</label>
+            
+          </div> -->
+          <button (click)="addGenres()" type="button" class="btn btn-primary">Add Genre</button>
+          <div formArrayName="genresArray">
+            <div *ngFor="let genre of genresArray.controls;let i=index">
+              <div [formGroupName]="i">
+                <label>Genre Name:</label>
+                <div style="display: flex;">
+                  <select  class="form-control" (change)="discardgenre($event)" formControlName="id">
+                    <option value="" disabled>select genre</option>
+                    <option *ngFor="let genre of genres" [ngValue]="genre.id">{{ genre.name}}
+                    </option>
+                  </select>
+                  <button (click)="removeGenre(i)" class="btn btn-danger">Remove</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>isbn</label>
+            <input type="text" formControlName="isbn" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Add Book</button>
+        </form>
+        <a routerLink="['/Books']" class="btn btn-danger btn-block">Go Back</a>
+      </div>
+    </div>
+  </div>
+
+</div>

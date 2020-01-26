@@ -1,0 +1,25 @@
+<a class="btn btn-primary" [routerLink]="['/books/new']">Add New Book</a>
+<a class="btn btn-primary" [routerLink]="['/authors/new']">Add New Author</a>
+
+    <div class="form-group">
+    <label>search for books</label>
+    <input class="form-control" #newquery (keyup)="submit(newquery.value)" (keyup.Enter)="submit(newquery.value)"
+      autofocus type="text"
+      style="width: 50%;" [value]="query">
+  </div>
+  {{newquery.value}}
+  <div class="row">
+    <ng-container *ngFor="let book of books">
+      <div class="col-md-4" style="margin-bottom: 20px;">
+        <div class="card">
+          <img *ngIf="book.Image" class="card-img-top" [src]="book.Image" alt="Card image">
+          <div class="card-body">
+            <h4 class="card-title">{{book.title}}</h4>
+            <p class="card-text">{{book.summary}}</p>
+            <a [routerLink]="['/books/'+book.id]" class="btn btn-primary">More Info</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+

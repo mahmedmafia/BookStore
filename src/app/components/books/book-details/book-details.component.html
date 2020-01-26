@@ -1,0 +1,51 @@
+<div class="container">
+  <button class="btn btn-primary" (click)="modelOpen=true">Delete Book</button>
+  <!-- Trigger/Open The Modal -->
+  <!-- The Modal -->
+  <div id="myModal" class="modal" *ngIf="modelOpen">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close" title="Close Modal" (click)="modelOpen=false">&times;</span>
+
+      <div class="container text-center">
+        <h1>Delete {{book.title}}</h1>
+        <p>Are you sure you want to delete This Book?</p>
+
+        <div class="clearfix">
+          <button type="button" class="w3btn cancelbtn " (click)="modelOpen=false">Cancel</button>
+          <button type="button" class=" w3btn deletebtn " (click)="deleteBook()">Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>{{book?.title}}</h4>
+      <div class="card">
+        <img *ngIf="book?.Image" [src]="book?.Image">
+        <div class="card-body">
+          <h6>Summary</h6>
+          <p class="card-text" style="font-size: .9em;">{{book?.summary}}</p>
+
+        </div>
+      </div>
+      <div class="card text-center">
+        <div class="card-header">
+          Author Details
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{book?.author.first_name +' '+book?.author.last_name }}</h5>
+          <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
+          <a [routerLink]="['/author/'+book?.author.id]" class="btn btn-primary">Author Link</a>
+        </div>
+        <div class="card-footer text-muted">
+          Lived From {{book?.author.date_of_birth | date}} Till
+          {{book?.author.date_of_death | date}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
