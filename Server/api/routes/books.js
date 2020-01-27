@@ -4,7 +4,7 @@ const router = express.Router();
 const Book = require('../models/book');
 const Author = require('../models/author');
 const multer = require('multer');
-
+const checkAuth=require('../middleware/check-auth');
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, 'uploads/');
@@ -32,7 +32,6 @@ const upload = multer({
 });
 router.get('/', (req, res, next) => {
   let title = req.query.title;
-  console.log(req.query);
   let query = Book.find();
   var queryParam = new RegExp('' + title, 'i');
   if (title) {
@@ -108,7 +107,7 @@ router.patch('/:bookid', (req, res) => {
       res.status(500).json({ error: err });
     });
 });
-router.delete('/:bookid', (req, res) => {
+router.delete('/:bookid',checkAuth ,(req, res) => {
   const id = req.params.bookid;
   Book.deleteOne({ _id: id })
     .exec()
