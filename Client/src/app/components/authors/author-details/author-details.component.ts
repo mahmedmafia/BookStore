@@ -18,7 +18,7 @@ export class AuthorDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.bookStore.getBook(this.id).subscribe(res => {
+    this.bookStore.getAuthor(this.id).subscribe(res => {
       this.author = res;
       console.log(this.author);
     });

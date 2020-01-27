@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +31,7 @@ export class BookstoreService {
       Image: Image,
     };
   }
-  mapAuthor(doc) {
+  mapAuthor(doc): Author {
     const LocalHostUrl = "http://localhost:3000/";
     let Image;
     if (!doc.Image) {
@@ -100,6 +100,7 @@ export class BookstoreService {
       .pipe(map(docs => docs['books']), map(this.mapBooks)).subscribe(res => {
         this.BooksChanged.next(res);
       });
+
   }
   serachBooks(query) {
     console.log('seraching', query);
@@ -110,18 +111,7 @@ export class BookstoreService {
   }
   getAuthor(id) {
     return this.http.get<Author>(this.AuthorsUrl + '/' + id)
-      .pipe(map(docs => docs['docs']), map(doc => {
-        return {
-
-          id: doc._id,
-          books: doc.books,
-          first_name: doc.first_name,
-          last_name: doc.last_name,
-          date_of_birth: doc.date_of_birth,
-          date_of_death: doc.date_of_death,
-        };
-
-      }));
+      .pipe(map(docs => docs['docs']), map(this.mapAuthor));
   }
   getAuthors() {
     return this.http.get<Author[]>(this.AuthorsUrl)
@@ -152,7 +142,7 @@ export class BookstoreService {
     this.http.post(this.AuthorsUrl, newAuthor).subscribe(res => {
       console.log(res);
     }, (err) => {
-      console.log(err.error.error.message)
+      console.log(err.error.error.message);
     });
   }
 }
@@ -172,10 +162,10 @@ export interface Genre {
 }
 export interface Author {
   id: String,
-  date_of_birth: Date,
-  date_of_death: Date,
+  date_of_birth?: Date,
+  date_of_death?: Date,
   first_name: String,
   last_name: String,
-  books: Book[],
-  Image: String,
+  books?: Book[],
+  Image?: String,
 }

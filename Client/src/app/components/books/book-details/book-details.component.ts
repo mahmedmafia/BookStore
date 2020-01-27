@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookstoreService, Book } from 'src/app/services/bookstore.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-book-details',
@@ -12,7 +13,8 @@ export class BookDetailsComponent implements OnInit {
   id;
   book: Book;
   modelOpen = false;
-  constructor(private bookStore: BookstoreService, private route: ActivatedRoute, private router: Router) {
+  isLogin = false;
+  constructor(private bookStore: BookstoreService, private route: ActivatedRoute, private router: Router, private authServ: AuthService) {
 
     this.route.params.subscribe(param => { this.id = param['id'] });
   }
@@ -22,14 +24,14 @@ export class BookDetailsComponent implements OnInit {
       this.book = res;
       console.log(this.book);
     });
+    this.isLogin = this.authServ.isLogin;
   }
   deleteBook() {
     this.bookStore.deleteBook(this.id).subscribe(res => {
       console.log(res);
       this.router.navigate(['/books']);
       this.modelOpen = false;
-
-    });
+    }, error => { console.log(error); });
   }
 
 }

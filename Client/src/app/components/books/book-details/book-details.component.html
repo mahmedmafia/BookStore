@@ -1,5 +1,5 @@
 <div class="container">
-  <button class="btn btn-primary" (click)="modelOpen=true">Delete Book</button>
+  <button class="btn btn-primary" (click)="modelOpen=true" *ngIf="isLogin">Delete Book</button>
   <!-- Trigger/Open The Modal -->
   <!-- The Modal -->
   <div id="myModal" class="modal" *ngIf="modelOpen">
